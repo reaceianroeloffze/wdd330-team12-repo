@@ -29,3 +29,11 @@ export const getParam = function (param) {
     const product = urlParams.get(param);
     return product
 }
+
+export function getParam(param) {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const result = urlParams.get(param);
+
+    return result;
+}
