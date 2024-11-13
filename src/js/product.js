@@ -10,10 +10,10 @@ product.init();
 
 // add to cart button event handler
 async function addToCartHandler() {
-  product.addProductToCart();
+    product.addProductToCart();
 }
 
 // add listener to Add to Cart button
 document
-  .getElementById('addToCart')
-  .addEventListener('click', addToCartHandler);
+    .getElementById('addToCart')
+    .addEventListener('click', addToCartHandler);
