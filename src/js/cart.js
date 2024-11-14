@@ -1,22 +1,20 @@
-import { getLocalStorage } from './utils.mjs';
-
+import { getLocalStorage } from "./utils.mjs";
 
 function renderCartContents() {
+    const cartItems = [];
 
-  const cartItems = [];
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        const item = getLocalStorage(key);
+        cartItems.push(item);
+    }
 
-  for (let i = 0; i < localStorage.length; i++) {
-    const key = localStorage.key(i);
-    const item = getLocalStorage(key);
-    cartItems.push(item);
-  }
-  
-  const htmlItems = cartItems.map(item => cartItemTemplate(item))
-  document.querySelector('.product-list').innerHTML = htmlItems.join('');
+    const htmlItems = cartItems.map((item) => cartItemTemplate(item));
+    document.querySelector(".product-list").innerHTML = htmlItems.join("");
 }
 
 function cartItemTemplate(item) {
-  const newItem = `<li class="cart-card divider">
+    const newItem = `<li class="cart-card divider">
   <a href="#" class="cart-card__image">
     <img
       src="${item.Image}"
@@ -31,7 +29,7 @@ function cartItemTemplate(item) {
   <p class="cart-card__price">$${item.FinalPrice}</p>
 </li>`;
 
-  return newItem;
+    return newItem;
 }
 
 renderCartContents();
