@@ -1,3 +1,5 @@
+import { renderListWithTemplate } from './utils.mjs';
+
 function renderProductCard(product) {
     return `<li class="product-card">
         <a href="product_pages/?product=${product.Id}">
@@ -24,10 +26,8 @@ export default class ProductListing {
     async init() {
         const data = await this.dataSource.getData();
         data.forEach((product) => {
-            this.listElement.insertAdjacentHTML(
-                'beforeEnd',
-                renderProductCard(product)
-            );
+            renderListWithTemplate(renderProductCard(product),this.listElement);
         });
     }
+
 }
