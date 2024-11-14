@@ -1,6 +1,10 @@
 :root {
     --font-body: Arial, Helvetica, sans-serif;
+<<<<<<< HEAD
     --font-headline: Haettenschweiler, "Arial Narrow Bold", sans-serif;
+=======
+    --font-headline: Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+>>>>>>> c2387a5b15ecc03cf308bf78574be21096d94cb2
     /* colors */
     --primary-color: #f0a868;
     --secondary-color: #525b0f;

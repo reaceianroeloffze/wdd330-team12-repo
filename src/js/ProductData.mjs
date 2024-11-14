@@ -1,11 +1,20 @@
 function convertToJson(res) {
     if (res.ok) {
+<<<<<<< HEAD
       return res.json();
     } else {
       throw new Error("Bad Response");
     }
   }
   
+=======
+        return res.json();
+    } else {
+        throw new Error('Bad Response');
+    }
+}
+
+>>>>>>> c2387a5b15ecc03cf308bf78574be21096d94cb2
 export default class ProductData {
     constructor(category) {
         this.category = category;
@@ -15,6 +24,7 @@ export default class ProductData {
         return fetch(this.path)
             .then(convertToJson)
             .then((data) => data);
+<<<<<<< HEAD
       
         //ALTERNATIVE WAY
         // async function getData() {
@@ -38,5 +48,12 @@ export default class ProductData {
     }
     //I added this method so that it can return the product Id after find it and then we can use the
     //same id as a key in the localstorage. This will help because we can then use different keys to store different products.
+=======
+    }
+    async findProductById(id) {
+        const products = await this.getData();
+        return products.find((item) => item.Id === id);
+    }
+>>>>>>> c2387a5b15ecc03cf308bf78574be21096d94cb2
 }
     

@@ -2,6 +2,7 @@ import { resolve } from "path";
 import { defineConfig } from "vite";
 
 export default defineConfig({
+<<<<<<< HEAD
     root: "src/",
 
     build: {
@@ -26,6 +27,20 @@ export default defineConfig({
                 product4: resolve(
                     __dirname,
                     "src/product_pages/northface-talus-4.html",
+=======
+    root: 'src/',
+
+    build: {
+        outDir: '../dist',
+        rollupOptions: {
+            input: {
+                main: resolve(__dirname, 'src/index.html'),
+                cart: resolve(__dirname, 'src/cart/index.html'),
+                checkout: resolve(__dirname, 'src/checkout/index.html'),
+                product: resolve(
+                    __dirname,
+                    'src/product_pages/index.html'
+>>>>>>> c2387a5b15ecc03cf308bf78574be21096d94cb2
                 ),
             },
         },
