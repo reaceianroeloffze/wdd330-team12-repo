@@ -1,46 +1,31 @@
-import { renderListWithTemplate } from './utils.mjs';
+import {renderListWithTemplate} from './utils.mjs';
 
-function renderProductCard(product) {
-    const discountedMessage =
-        product.FinalPrice < product.SuggestedRetailPrice
-            ? `<del>$${parseFloat(product.SuggestedRetailPrice).toFixed(2)}</del><br>`
-            : '';
-
+// Create a template for displaying all available products
+const productCardTemplate = (product) => {
     return `<li class="product-card">
-        <a href="product_pages/?product=${product.Id}">
-            <img
-                src=${product.Image}
-                alt=${product.NameWithoutBrand}
-            />
-            <h3 class="card__brand">${product.Brand.Name}</h3>
-            <h2 class="card__name">
-                ${product.NameWithoutBrand}
-            </h2>
-            <p class="product-card__price">${discountedMessage}$${product.FinalPrice}</p></a
-        >
-    </li>`;
+            <a href="product_pages/?product=${product.Id}">
+                <img src="${product.Image}" alt="Image of ${product.NameWithoutBrand}"/>
+                <h3 class="card__brand">${product.Brand.Name}</h3>
+                <h2 class="card__name">${product.NameWithoutBrand}</h2>
+                <p class="product-card__price">${product.FinalPrice}</p>
+            </a>
+        </li>`;
 }
 
+// Create a productListing class
 export default class ProductListing {
-    constructor(category, dataSource, listElement) {
-        this.category = category;
+    constructor(dataSource, listElement) {
         this.dataSource = dataSource;
         this.listElement = listElement;
     }
 
     async init() {
-        const data = await this.dataSource.getData();
-        const limitedData = this.limitDataResultsByNumber(4, data);
-        limitedData.forEach((product) => {
-            renderListWithTemplate(
-                renderProductCard(product),
-                this.listElement
-            );
-        });
+       const list = await this.dataSource.getData();
+       list.splice(4, list.length);
+       this.renderList(list);
     }
 
-    limitDataResultsByNumber(number, data) {
-        const result = data.splice(0, number);
-        return result;
+    renderList (list) {
+        renderListWithTemplate(productCardTemplate, this.listElement, list);
     }
 }
