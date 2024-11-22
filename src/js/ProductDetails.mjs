@@ -53,10 +53,25 @@ export default class ProductDetails {
 
     addProductToCart() {
         const data = getLocalStorage('so-cart');
+        let dataExists = false;
         if (data) {
-            data.push(this.product);
+            data.map((dataRow) => {
+                if (dataRow.Id === this.productId) {
+                    // Item already exists in the cart
+                    dataExists = true;
+                    // Update quantity to +1
+                    if ('quantity' in dataRow) {
+                        dataRow.quantity++;
+                    }
+                }
+            });
+            if (!dataExists) {
+                this.product.quantity = 1;
+                data.push(this.product);
+            }
             setLocalStorage('so-cart', data);
         } else {
+            this.product.quantity = 1;
             setLocalStorage('so-cart', [this.product]);
         }
     }
