@@ -8,8 +8,8 @@ const productCardTemplate = (product) => {
             : '';
 
     return `<li class="product-card">
-            <a href="product_pages/?product=${product.Id}">
-                <img src="${product.Image}" alt="Image of ${product.NameWithoutBrand}"/>
+            <a href="../product_pages/?product=${product.Id}">
+                <img src="${product.Images.PrimaryMedium}" alt="Image of ${product.NameWithoutBrand}"/>
                 <h3 class="card__brand">${product.Brand.Name}</h3>
                 <h2 class="card__name">${product.NameWithoutBrand}</h2>
                 <p class="product-card__price">${discountedMessage}$${product.FinalPrice}</p>
@@ -19,18 +19,39 @@ const productCardTemplate = (product) => {
 
 // Create a productListing class
 export default class ProductListing {
-    constructor(dataSource, listElement) {
+    constructor(category, dataSource, listElement) {
+        this.category = category;
         this.dataSource = dataSource;
         this.listElement = listElement;
     }
 
     async init() {
-        const list = await this.dataSource.getData();
+        const list = await this.dataSource.getData(this.category);
         list.splice(4, list.length);
         this.renderList(list);
+
+        // Set the categoryName Element to equal the category Top Product: Tents
+        const categoryNameElement = document.querySelector('#categoryName');
+        const formattedCategoryName = this.formatCategoryName(this.category);
+        categoryNameElement.textContent = formattedCategoryName;
     }
 
     renderList(list) {
         renderListWithTemplate(productCardTemplate, this.listElement, list);
+    }
+
+    formatCategoryName(categoryName) {
+        let result = '';
+        if (categoryName.includes('-')) {
+            result = categoryName
+                .split('-')
+                .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(' ');
+        } else {
+            result =
+                categoryName.charAt(0).toUpperCase() + categoryName.slice(1);
+        }
+
+        return result;
     }
 }
