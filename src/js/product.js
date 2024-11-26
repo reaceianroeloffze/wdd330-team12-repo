@@ -1,8 +1,13 @@
 import ProductData from './ProductData.mjs';
+<<<<<<< HEAD
 import { getParam, getLocalStorage, setLocalStorage } from './utils.mjs';
+=======
+>>>>>>> 1f029275fa60bf908ab469710b059d783ed50ce9
 import ProductDetails from './ProductDetails.mjs';
+import { getParam, loadHeaderFooter } from './utils.mjs';
 
 const productId = getParam('product');
+<<<<<<< HEAD
 const dataSource = new ProductData('tents');
 const product = new ProductDetails(productId, dataSource);
 product.init();
@@ -26,3 +31,12 @@ async function addToCartHandler() {
 document
     .getElementById('addToCart')
     .addEventListener('click', addToCartHandler);
+=======
+const dataSource = new ProductData();
+
+// Load the header and Footer
+loadHeaderFooter();
+
+const product = new ProductDetails(productId, dataSource);
+product.init();
+>>>>>>> 1f029275fa60bf908ab469710b059d783ed50ce9

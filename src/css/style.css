@@ -216,6 +216,12 @@ button {
     }
 }
 
+.categories{
+    display:flex;
+    justify-content: space-evenly;
+    text-align: center;
+}
+
 footer {
     font-size: var(--small-font);
     padding: 1em;
