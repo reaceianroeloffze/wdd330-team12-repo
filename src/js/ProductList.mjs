@@ -27,13 +27,8 @@ export default class ProductListing {
 
     async init() {
         const list = await this.dataSource.getData(this.category);
-        list.splice(4, list.length);
         this.renderList(list);
-
-        // Set the categoryName Element to equal the category Top Product: Tents
-        const categoryNameElement = document.querySelector('#categoryName');
-        const formattedCategoryName = this.formatCategoryName(this.category);
-        categoryNameElement.textContent = formattedCategoryName;
+        this.renderCategoryNames(this.category);
     }
 
     renderList(list) {
@@ -53,5 +48,13 @@ export default class ProductListing {
         }
 
         return result;
+    }
+
+    renderCategoryNames(catName) {
+        // Set the categoryName Element to equal the category Top Product: Tents
+        const categoryNameElement = document.querySelectorAll('.product-category');
+        categoryNameElement.forEach(category => {
+            category.textContent = `Top Products: ${this.formatCategoryName(catName)}`;
+        })
     }
 }

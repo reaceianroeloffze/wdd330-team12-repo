@@ -9,7 +9,7 @@ function cartItemTemplate(item) {
     const newItem = `<li class="cart-card divider">
   <a href="#" class="cart-card__image">
     <img
-      src="${item.Image}"
+      src="${item.Images.PrimarySmall}"
       alt="${item.Name}"
     />
   </a>
@@ -39,9 +39,19 @@ export default class ShoppingCart {
         if (cartItems && cartItems.length > 0) {
             const htmlItems = cartItems.map((item) => cartItemTemplate(item));
             this.parentSelector.innerHTML = htmlItems.join('');
+            this.renderTotalItemPrices(cartItems);
         } else {
             this.parentSelector.innerHTML = 'No items in cart';
             this.parentSelector.style.fontSize = '2rem';
         }
+    }
+
+    renderTotalItemPrices (cartItems) {
+        let totalPrice = 0;
+        let finalTotalPrice = cartItems.reduce((cartLoad, cartItem) => cartLoad + (cartItem.FinalPrice * cartItem.quantity), totalPrice);
+        const totalDisplay = document.querySelector('.total-price-display');
+        let priceDisplay = document.querySelector('.total-price-display__price');
+        priceDisplay.textContent =  `$${parseFloat(finalTotalPrice).toFixed(2)}`;
+        totalDisplay.style.display = 'grid';
     }
 }
