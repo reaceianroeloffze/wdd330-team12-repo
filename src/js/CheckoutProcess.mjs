@@ -1,4 +1,26 @@
-import { getLocalStorage} from './utils.mjs';
+import { getLocalStorage } from './utils.mjs';
+import ExternalServices from './ExternalServices.mjs';
+
+const services = new ExternalServices();
+const packageItems = function (items) {
+    return items.map((item) => {
+        return {
+            id: item.Id,
+            name: item.Name,
+            quantity: item.quantity,
+            price: item.FinalPrice,
+        };
+    })
+}
+
+const convertFormDataToJSON = function (formElement) {
+    const formData = new FormData(formElement),
+        JSONConversion = {};
+    formData.forEach(function (value, key) {
+        JSONConversion[key] = value;
+    });
+    return JSONConversion;
+}
 
 export default class CheckoutProcess {
     constructor (key) {
@@ -47,6 +69,23 @@ export default class CheckoutProcess {
         document.querySelector('.shipping-estimate').innerHTML = `$${parseFloat(this.shippingEstimate).toFixed(2)}`;
         document.querySelector('.tax').innerHTML = `$${parseFloat(this.tax).toFixed(2)}`;
         document.querySelector('.order-total').innerHTML = `$${parseFloat(this.orderTotal).toFixed(2)}`;
+    }
+
+    async checkout () {
+        const checkoutForm = document.querySelector('.checkout-form');
+        const JSONObject = convertFormDataToJSON(checkoutForm);
+        JSONObject.orderDate = new Date();
+        JSONObject.items = packageItems(this.list);
+        JSONObject.orderTotal = this.orderTotal;
+        JSONObject.shipping = this.shippingEstimate;
+        JSONObject.tax = this.tax;
+
+        try {
+            const result = await services.checkout(JSONObject);
+            console.log(result);
+        } catch (error) {
+            console.log(error)
+        }
     }
 
 }
