@@ -75,6 +75,15 @@ export default class ProductDetails {
             setLocalStorage('so-cart', [this.product]);
         }
 
+        // Create an alert that item was added & animate the backpack icon
         alertMessage('This item has been added to your cart successfully.');
+
+        const backpackBtn = document.querySelector('.cart');
+        // Reset the animation
+        backpackBtn.classList.remove('animate-backpack');
+
+        // Animate the backpack
+        backpackBtn.classList.add('animate-backpack');
+
     }
 }
