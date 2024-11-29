@@ -357,7 +357,21 @@ button {
 
 .close-btn{
     background: none;
-    
+}
+
+.animate-backpack{
+    animation-name: backpack;
+    animation-duration: 4s;
+    animation-iteration-count: 1;
+}
+
+@keyframes backpack {
+    25%{
+        transform: scale(0.5);
+    }
+    75%{
+        transform: rotate(1turn);
+    }
 }
 
 @media screen and (min-width: 500px) {
@@ -372,8 +386,6 @@ button {
         font-size: inherit;
         grid-template-columns: 150px auto 15%;
     }
-
-
 }
 
 @media screen and (max-width: 700px) {
