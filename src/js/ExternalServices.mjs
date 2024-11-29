@@ -9,8 +9,7 @@ function convertToJson(res) {
 }
 
 export default class ExternalServices {
-    constructor() {
-    }
+    constructor() {}
     async getData(category) {
         const response = await fetch(baseURL + `products/search/${category}`);
         const data = await convertToJson(response);
@@ -22,15 +21,15 @@ export default class ExternalServices {
         return product.Result;
     }
 
-    async checkout(payload){
+    async checkout(payload) {
         const options = {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify(payload)
-        }
+            body: JSON.stringify(payload),
+        };
 
-       return await fetch('https://wdd330-backend.onrender.com:3000/checkout',options);
+        return await fetch(baseURL + 'checkout/', options).then(convertToJson);
     }
 }
