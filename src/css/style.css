@@ -347,6 +347,19 @@ button {
     justify-self: end;
 }
 
+.alert{
+    display: flex;
+    justify-content: space-between;
+    background-color: antiquewhite;
+    padding: .8rem;
+    align-items: center;
+}
+
+.close-btn{
+    background: none;
+    
+}
+
 @media screen and (min-width: 500px) {
     body {
         max-width: 1080px;

@@ -1,4 +1,4 @@
-import { getLocalStorage } from './utils.mjs';
+import { getLocalStorage, setLocalStorage, alertMessage } from './utils.mjs';
 import ExternalServices from './ExternalServices.mjs';
 
 const services = new ExternalServices();
@@ -10,8 +10,8 @@ const packageItems = function (items) {
             quantity: item.quantity,
             price: item.FinalPrice,
         };
-    })
-}
+    });
+};
 
 const convertFormDataToJSON = function (formElement) {
     const formData = new FormData(formElement),
@@ -20,10 +20,10 @@ const convertFormDataToJSON = function (formElement) {
         JSONConversion[key] = value;
     });
     return JSONConversion;
-}
+};
 
 export default class CheckoutProcess {
-    constructor (key) {
+    constructor(key) {
         this.key = key;
         this.list = [];
         this.subtotal = 0;
@@ -33,46 +33,57 @@ export default class CheckoutProcess {
         this.quantity = 0;
     }
 
-    async init () {
+    async init() {
         this.list = getLocalStorage(this.key);
         this.calculateSubtotal();
         this.calculateQuantity();
     }
 
-    calculateSubtotal () {
-        this.subtotal = this.list.reduce((cartLoad, cartItem) => cartLoad + (cartItem.FinalPrice * cartItem.quantity), this.subtotal);
+    calculateSubtotal() {
+        this.subtotal = this.list.reduce(
+            (cartLoad, cartItem) =>
+                cartLoad + cartItem.FinalPrice * cartItem.quantity,
+            this.subtotal
+        );
         const orderSubTotal = document.querySelector('.subtotal');
         orderSubTotal.textContent = `$${parseFloat(this.subtotal).toFixed(2)}`;
     }
 
-    calculateTax ()  {
+    calculateTax() {
         this.tax = 0.06 * this.subtotal;
     }
 
-    calculateQuantity () {
-        this.quantity = this.list.reduce((cartLoad, cartItem) => cartLoad + (cartItem.quantity), this.quantity);
+    calculateQuantity() {
+        this.quantity = this.list.reduce(
+            (cartLoad, cartItem) => cartLoad + cartItem.quantity,
+            this.quantity
+        );
         document.querySelector('.cart-quant').innerHTML = this.quantity;
     }
 
-    calculateShipping () {
+    calculateShipping() {
         this.shippingEstimate = 10 + (this.quantity - 1) * 2;
     }
 
-    calculateOrderTotal () {
+    calculateOrderTotal() {
         this.orderTotal = this.subtotal + this.shippingEstimate + this.tax;
     }
 
-    displayOrderSummary () {
+    displayOrderSummary() {
         this.calculateShipping();
         this.calculateTax();
         this.calculateOrderTotal();
-        document.querySelector('.shipping-estimate').innerHTML = `$${parseFloat(this.shippingEstimate).toFixed(2)}`;
-        document.querySelector('.tax').innerHTML = `$${parseFloat(this.tax).toFixed(2)}`;
-        document.querySelector('.order-total').innerHTML = `$${parseFloat(this.orderTotal).toFixed(2)}`;
+        document.querySelector('.shipping-estimate').innerHTML =
+            `$${parseFloat(this.shippingEstimate).toFixed(2)}`;
+        document.querySelector('.tax').innerHTML =
+            `$${parseFloat(this.tax).toFixed(2)}`;
+        document.querySelector('.order-total').innerHTML =
+            `$${parseFloat(this.orderTotal).toFixed(2)}`;
     }
 
-    async checkout () {
+    async checkout() {
         const checkoutForm = document.querySelector('.checkout-form');
+
         const JSONObject = convertFormDataToJSON(checkoutForm);
         JSONObject.orderDate = new Date();
         JSONObject.items = packageItems(this.list);
@@ -83,9 +94,32 @@ export default class CheckoutProcess {
         try {
             const result = await services.checkout(JSONObject);
             console.log(result);
-        } catch (error) {
-            console.log(error)
+            setLocalStorage('so-cart', []);
+            location.assign('/checkout/success.html');
+        } catch (err) {
+            console.log(err);
+
+            let errorMessage = err.message;
+            if (errorMessage instanceof Promise) {
+                errorMessage = await errorMessage;
+            }
+
+            if (errorMessage && typeof errorMessage === 'object') {
+                for (const key in errorMessage) {
+                    if (errorMessage[key]) {
+                        console.log(
+                            `Key: ${key}, Message: ${errorMessage[key]}`
+                        );
+                        alertMessage(errorMessage[key]);
+                    } else {
+                        console.log(
+                            'Unexpected error message format:',
+                            errorMessage
+                        );
+                        alertMessage('An unexpected error occurred.');
+                    }
+                }
+            }
         }
     }
-
 }

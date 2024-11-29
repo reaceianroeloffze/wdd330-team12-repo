@@ -1,15 +1,16 @@
 const baseURL = import.meta.env.VITE_SERVER_URL;
 
 function convertToJson(res) {
-    if (res.ok) {
-        return res.json();
-    } else {
-        throw new Error('Bad Response');
+    const jsonResponse = res.json();
+
+    if (!res.ok) {
+        throw {name: 'servicesError', message: jsonResponse}
+    }else{
+        return jsonResponse;
     }
 }
 
 export default class ExternalServices {
-
     constructor() {}
     async getData(category) {
         const response = await fetch(baseURL + `products/search/${category}`);

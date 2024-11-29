@@ -29,7 +29,13 @@ export const getParam = function (param) {
     return urlParams.get(param);
 };
 
-export const renderListWithTemplate = function (templateFn, parentElement, list, position = 'afterbegin', clear = false) {
+export const renderListWithTemplate = function (
+    templateFn,
+    parentElement,
+    list,
+    position = 'afterbegin',
+    clear = false
+) {
     const HTMLProdDisplay = list.map(templateFn);
     parentElement.insertAdjacentHTML(position, HTMLProdDisplay.join(''));
     if (clear) {
@@ -66,3 +72,31 @@ async function loadTemplate(path) {
 
     return htmlString;
 }
+
+export const alertMessage = function (message, scroll = true) {
+    const errorDiv = document.createElement('div');
+    errorDiv.classList.add('alert');
+
+    const messageDiv = document.createElement('div');
+    const closeDiv = document.createElement('div');
+    const closeBtn = document.createElement('button');
+    closeBtn.classList.add('close-btn');
+
+    closeDiv.addEventListener('click', function (e) {
+        main.removeChild(e.target.closest('.alert'));
+    });
+
+    messageDiv.textContent = message;
+    closeBtn.textContent = '❌';
+    closeDiv.appendChild(closeBtn);
+
+    errorDiv.appendChild(messageDiv);
+    errorDiv.appendChild(closeDiv);
+
+    const main = document.querySelector('main');
+    main.prepend(errorDiv);
+
+    if (scroll) {
+        window.scrollTo(0, 0);
+    }
+};
