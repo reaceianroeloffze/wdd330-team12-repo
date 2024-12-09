@@ -1,4 +1,4 @@
-import { setLocalStorage, getLocalStorage } from './utils.mjs';
+import { setLocalStorage, getLocalStorage, alertMessage } from './utils.mjs';
 
 export default class ProductDetails {
     constructor(productId, dataSource) {
@@ -74,5 +74,16 @@ export default class ProductDetails {
             this.product.quantity = 1;
             setLocalStorage('so-cart', [this.product]);
         }
+
+        // Create an alert that item was added & animate the backpack icon
+        alertMessage('This item has been added to your cart successfully.');
+
+        const backpackBtn = document.querySelector('.cart');
+        // Reset the animation
+        backpackBtn.classList.remove('animate-backpack');
+
+        // Animate the backpack
+        backpackBtn.classList.add('animate-backpack');
+
     }
 }
