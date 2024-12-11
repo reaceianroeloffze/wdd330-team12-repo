@@ -3,14 +3,14 @@ import CheckoutProcess from './CheckoutProcess.mjs';
 
 loadHeaderFooter();
 
-const checkout = new CheckoutProcess('so-cart');
-checkout.init();
+const cartCheckout = new CheckoutProcess('so-cart');
+cartCheckout.init();
 
 const zipCode = document.querySelector('.zip');
 
 zipCode.addEventListener('change', elem => {
     if (elem.value !== '') {
-        checkout.displayOrderSummary();
+        cartCheckout.displayOrderSummary();
     }
 })
 
@@ -18,5 +18,10 @@ const formSubmitBtn = document.querySelector('.submit-btn');
 
 formSubmitBtn.addEventListener('click', (e) => {
     e.preventDefault();
-    checkout.checkout(e);
+    const checkoutForm = document.querySelector('.checkout-form');
+    const formValidity = checkoutForm.checkValidity();
+    checkoutForm.reportValidity();
+    if (formValidity) {
+        cartCheckout.checkout();
+    }
 })

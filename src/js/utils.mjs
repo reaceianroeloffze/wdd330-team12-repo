@@ -66,3 +66,22 @@ async function loadTemplate(path) {
 
     return htmlString;
 }
+
+export const alertMessage = (message, scroll=true) => {
+    const formMain = document.querySelector('main.divider');
+    const errorMsg = document.createElement('p');
+    if (message) {
+        errorMsg.textContent = message;
+        errorMsg.style.textAlign = 'center';
+        errorMsg.style.color = 'red';
+        errorMsg.style.backgroundColor = '#FFFF8F';
+        errorMsg.style.fontSize = '2rem';
+        errorMsg.style.padding = '10px';
+        errorMsg.style.borderRadius = '5px';
+        formMain.prepend(errorMsg);
+    }
+    if (scroll) {
+        window.scrollTo(0, 0);
+    }
+    setTimeout(() => errorMsg.remove(), 6000);
+}

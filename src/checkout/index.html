@@ -17,7 +17,7 @@
             <!-- Populated using JS -->
         </header>
 
-        <main class="divider">
+        <main class="divider form-main">
             <section class="products">
                 <h2>Review & Place your Order</h2>
                 <p class="form-para">* indicates a required field.</p>
@@ -50,13 +50,14 @@
                     <fieldset class="form-fieldset payment">
                         <legend>Payment</legend>
                         <label class="form-label credit-card-label">Credit Card Number:*
-                            <input type="text" name="cardNumber" class="form-input card-number" required>
+                            <input type="text" name="cardNumber" class="form-input card-number" required
+                                   minlength="16" maxlength="16">
                         </label>
                         <label class="form-label exp-date-label">Expiration Date:*
                             <input type="text" name="expiration" class="form-input expiration" required>
                         </label>
                         <label class="form-label sec-code-label">Security Code:*
-                            <input type="text" class="form-input code" name="code" required>
+                            <input type="text" class="form-input code" name="code" minlength="3" maxlength="3" required>
                         </label>
                     </fieldset>
                     <button type="submit" class="submit-btn">Complete Purchase</button>
