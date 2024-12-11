@@ -92,13 +92,10 @@ export default class CheckoutProcess {
         JSONObject.tax = this.tax;
 
         try {
-            const result = await services.checkout(JSONObject);
-            console.log(result);
+            await services.checkout(JSONObject);
             setLocalStorage('so-cart', []);
             location.assign('/checkout/success.html');
         } catch (err) {
-            console.log(err);
-
             let errorMessage = err.message;
             if (errorMessage instanceof Promise) {
                 errorMessage = await errorMessage;
@@ -107,15 +104,8 @@ export default class CheckoutProcess {
             if (errorMessage && typeof errorMessage === 'object') {
                 for (const key in errorMessage) {
                     if (errorMessage[key]) {
-                        console.log(
-                            `Key: ${key}, Message: ${errorMessage[key]}`
-                        );
                         alertMessage(errorMessage[key]);
                     } else {
-                        console.log(
-                            'Unexpected error message format:',
-                            errorMessage
-                        );
                         alertMessage('An unexpected error occurred.');
                     }
                 }
